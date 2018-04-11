@@ -141,6 +141,31 @@ class Account(models.Model):
         verbose_name = u'账号记录'
         verbose_name_plural = u'账号记录'
 
+class NewAccount(models.Model):
+    username = models.CharField(max_length=50, verbose_name=u'用戶名')
+    pwd = models.CharField(max_length=100, verbose_name=u'密码')
+    platform = models.CharField(max_length=100, verbose_name=u'平台')
+    gamename = models.CharField(max_length=100, verbose_name=u'游戏')
+    used = models.BooleanField(default=False, verbose_name=u'已用')
+    create_date = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        verbose_name = u'新账号'
+        verbose_name_plural = u'新账号'
+
+class Config(models.Model):
+    key = models.CharField(max_length=100, verbose_name=u'属性')
+    value = models.CharField(max_length=100, verbose_name=u'值')
+
+    @staticmethod
+    def update_config():
+        Config.objects.all().delete()
+        Config(key="new_act_limit", value="50").save()
+
+    class Meta:
+        verbose_name = u"配置"
+        verbose_name_plural = u"配置"
+
 def update_db():
     GameName.update_game_names()
     OPSystem.update_opsystem()
@@ -149,3 +174,4 @@ def update_db():
     Pet.update_pets()
     Goods.update_goods()
     Character.update_characters()
+    Config.update_config()

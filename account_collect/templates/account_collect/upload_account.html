@@ -1,0 +1,7 @@
+<form enctype="multipart/form-data" method="POST" action="/uploadact">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <br />
+  <input type="submit" value="上传文件" />
+</form>
+

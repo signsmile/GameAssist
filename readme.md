@@ -33,3 +33,46 @@ HTTP请求方式:
 -    
     http://game.signsmile.com/addact?gamename_id=2&system_id=2&platform_id=2&precinct=190&actnum=123456789&pwd=123456789&sex_id=1&pet_id=2&goods_id=2&character_id=5&remark=你好
 
+新注册账户提交接口
+=
+请求URL:
+-
+	http://game.signsmile.com/addnewact
+HTTP请求方式
+-
+    GET
+请求参数：
+-
+
+|:------------|:------------|:------------|:------------|
+|actnum|账号|string||
+|pwd|密码|string||
+|platform|平台|string||
+|gamename|游戏|string||
+
+提交例子：
+-
+    http://game.signsmile.com/addnewact?actnum=123456789&pwd=123456789&platform=TT&gamename=口袋妖怪复刻
+    http://localhost:8000/addnewact?actnum=123456789&pwd=123456789&platform=TT&gamename=口袋妖怪复刻
+
+新注册账户获取接口
+=
+请求URL
+-   
+	http://game.signsmile.com/getnewact
+	http://localhost/getnewact
+HTTP请求方式
+-
+    GET
+    
+返回参数
+-
+{
+    'result':'success',              //结果状态
+    'actnum': 123651021,             //账号
+    'pwd': 123456,                   //密码
+    'platform': TT,                  //平台
+    'gamename': 口袋妖怪复刻         //游戏
+}
+
+    
