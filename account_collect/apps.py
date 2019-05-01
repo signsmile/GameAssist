@@ -6,4 +6,4 @@ from django.apps import AppConfig
 
 class AccountCollectConfig(AppConfig):
     name = 'account_collect'
-    verbose_name = _("账号收集")
+    verbose_name = _(u'账号收集')

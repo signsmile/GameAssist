@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
-from django.core import serializers
 
 from .models import GameName, OPSystem, Platform, Sex, Pet, Goods, Character, Account, NewAccount, Config
 from .forms import UploadFileForm
@@ -20,6 +19,9 @@ def check_contain_chinese(check_str):
     return False
 
 def index(request):
+    return render(request, 'account_collect/index.html')
+
+def switch2admin(request):
     return HttpResponseRedirect('/admin/account_collect/account/')
 
 def test(request):
@@ -86,13 +88,15 @@ def add_new_account(request):
     return HttpResponse("succeed")
 
 def get_new_account(request):
-    config = Config.objects.filter(key="new_act_limit").first()
-    if config is not None and \
-        config.value.isdigit and \
-        int(config.value) <= len(NewAccount.objects.filter(create_date__gte=datetime.date.today()).filter(used=True)):
-        return HttpResponse("{'result':'Limit to %d'}" % int(config.value))
+    # config = Config.objects.filter(key="new_act_limit").first()
+    # if config is not None and \
+    #     config.value.isdigit and \
+    #     int(config.value) <= len(NewAccount.objects.filter(create_date__gte=datetime.date.today()).filter(used=True)):
+    #     return HttpResponse("{'result':'Limit to %d'}" % int(config.value))
 
-    newAccount = NewAccount.objects.filter(create_date__gte=datetime.date.today()).filter(used=False).first()
+    # newAccount = NewAccount.objects.filter(create_date__gte=datetime.date.today()).filter(used=False).first()
+    newAccount = NewAccount.objects.filter(used=False).first()
+
     if newAccount is None:
         return HttpResponse("{'result':'None'}")
 
@@ -101,5 +105,12 @@ def get_new_account(request):
 
     result = "{'result':'success', 'actnum': %s, 'pwd': %s, 'platform': %s, 'gamename': %s}" % \
              (newAccount.username, newAccount.pwd, newAccount.platform, newAccount.gamename)
-    return  HttpResponse(result)
-    # return HttpResponse(serializers.serialize('json', [newAccount.]))
+    return HttpResponse(result)
+
+def reset_account_status(request):
+    newAccounts = NewAccount.objects.filter(used=True)
+    for newAccount in newAccounts:
+        newAccount.used = False
+        newAccount.save()
+
+    return HttpResponseRedirect('/admin/account_collect/newaccount/')
